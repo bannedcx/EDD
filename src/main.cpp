@@ -23,3 +23,11 @@ int main() {
     // Cargar grafo desde CSV
     cout << "Cargando grafo desde archivo..." << endl;
     Grafo grafo(10, false); // 10 vertices, no dirigido
+    
+    if (!grafo.cargarDesdeCSV("grafo.csv")) {
+        cout << "No se pudo cargar el archivo CSV" << endl;
+        cout << "Creando grafo vacio..." << endl;
+    }
+    
+    cout << "\nPresione Enter para continuar...";
+    cin.get();
