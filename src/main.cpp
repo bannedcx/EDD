@@ -16,3 +16,10 @@ void mostrarMenu() {
     cout << "0. Salir" << endl;
     cout << "\nOpcion: ";
 }
+
+int main() {
+    cout << "==LIBRERIA DE GRAFOS EN C++==" << endl;
+    
+    // Cargar grafo desde CSV
+    cout << "Cargando grafo desde archivo..." << endl;
+    Grafo grafo(10, false); // 10 vertices, no dirigido
