@@ -290,3 +290,98 @@ void Grafo::DFS(int inicio) {
     delete[] visitado;
 }
 
+// ==================== DIJKSTRA ====================
+void Grafo::dijkstra(int origen, int destino) {
+    if (origen < 0 || destino < 0 || origen >= numVertices || destino >= numVertices) {
+        cout << "Vertices invalidos" << endl;
+        return;
+    }
+
+    // Arrays dinamicos
+    int* distancia = new int[numVertices];
+    int* padre = new int[numVertices];
+    bool* visitado = new bool[numVertices];
+    
+    // Inicializar
+    for (int i = 0; i < numVertices; i++) {
+        distancia[i] = INT_MAX;
+        padre[i] = -1;
+        visitado[i] = false;
+    }
+    
+    distancia[origen] = 0;
+    
+    cout << "\n==ALGORITMO DIJKSTRA==" << endl;
+    cout << "Origen: " << origen << " | Destino: " << destino << endl;
+    
+    for (int cont = 0; cont < numVertices; cont++) {
+        // Encontrar vertice con menor distancia
+        int minDist = INT_MAX;
+        int u = -1;
+        
+        for (int v = 0; v < numVertices; v++) {
+            if (!visitado[v] && distancia[v] < minDist) {
+                minDist = distancia[v];
+                u = v;
+            }
+        }
+        
+        if (u == -1) break;
+        
+        visitado[u] = true;
+        
+        // Actualizar distancias de vecinos
+        NodoArista* arista = vertices[u].listaAristas;
+        while (arista != NULL) {
+            int v = arista->destino;
+            int peso = arista->peso;
+            
+            if (!visitado[v] && distancia[u] != INT_MAX) {
+                if (distancia[u] + peso < distancia[v]) {
+                    distancia[v] = distancia[u] + peso;
+                    padre[v] = u;
+                }
+            }
+            arista = arista->siguiente;
+        }
+    }
+    
+    // Mostrar resultado
+    if (distancia[destino] == INT_MAX) {
+        cout << "No hay camino entre " << origen << " y " << destino << endl;
+    } else {
+        cout << "Distancia minima: " << distancia[destino] << endl;
+        cout << "Camino: ";
+        
+        // Contar longitud del camino
+        int longitud = 0;
+        int actual = destino;
+        while (actual != -1) {
+            longitud++;
+            actual = padre[actual];
+        }
+        
+        // Crear array para el camino
+        int* camino = new int[longitud];
+        actual = destino;
+        int index = longitud - 1;
+        while (actual != -1) {
+            camino[index--] = actual;
+            actual = padre[actual];
+        }
+        
+        // Mostrar camino
+        for (int i = 0; i < longitud; i++) {
+            cout << camino[i];
+            if (i < longitud - 1) cout << " -> ";
+        }
+        cout << endl;
+        
+        delete[] camino;
+    }
+    
+    // Liberar memoria
+    delete[] distancia;
+    delete[] padre;
+    delete[] visitado;
+}
